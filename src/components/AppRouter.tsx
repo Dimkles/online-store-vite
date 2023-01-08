@@ -1,0 +1,60 @@
+import React, { FC, useEffect, useState } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { AdminRoutes, PrivateRoutes, PublickRoutes } from '../routes/routes';
+
+const AppRouter: FC = () => {
+
+
+    const [isAuth, setIsAuth] = useState(true)
+    const [user, isUser] = useState({
+        roles: [{ value: 'ADMIN' }, { value: 'USER' }]
+    })
+
+    const navigate = useNavigate()
+    const hash = useLocation().hash
+    useEffect(() => {
+        if (hash === '#projects') {
+            navigate('/projects')
+        } else if (hash === '#contacts') {
+            navigate('/contacts')
+        } else if (hash === '#adminPanel') {
+            navigate('/adminPanel')
+        }
+    })
+
+    return (
+        <Routes >
+            {isAuth
+                ?
+                user.roles.some(e => e.value === 'ADMIN')
+                    ?
+                    AdminRoutes.map(route =>
+                        <Route
+                            path={route.path}
+                            element={<route.element />}
+                            key={route.path}
+                        />
+                    )
+                    :
+                    PrivateRoutes.map(route =>
+                        <Route
+                            path={route.path}
+                            element={<route.element />}
+                            key={route.path}
+                        />
+                    )
+                :
+                PublickRoutes.map(route =>
+                    <Route
+                        path={route.path}
+                        element={<route.element />}
+                        key={route.path}
+                    />
+                )
+            }
+
+        </Routes>
+    );
+};
+
+export default AppRouter;
