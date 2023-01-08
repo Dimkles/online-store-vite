@@ -1,0 +1,17 @@
+.menu {
+    &__list {
+        display: flex;
+        gap: 15px;
+        font-size: 18px;
+    }
+
+    &__link {
+        color: #000000;
+        transition: .2;
+
+        &:hover {
+            color: #310bbb;
+        }
+    }
+
+}
